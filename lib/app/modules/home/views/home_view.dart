@@ -20,8 +20,8 @@ class HomeView extends GetView<HomeController> {
         actions: [
           Obx(
             () => CupertinoSwitch(
-              // activeColor: ColorsTheme.primaryColor,
-              // focusColor: ColorsTheme.primaryColor,
+              activeColor: Colors.purple.shade100,
+              focusColor: Colors.purple.shade100,
               value: controller.themeMode.value,
               onChanged: (bool? value) {
                 // controller.themeMode.value = value!;
@@ -51,17 +51,13 @@ class HomeView extends GetView<HomeController> {
                           'id': task.id,
                           'title': task.title,
                           'description': task.description,
-                          'select': task.isSelected?.value
+                          'select': task.isSelected.value
                         });
                       },
-                      value: task.isSelected!.value,
+                      value: task.isSelected.value,
                       onChanged: (bool? value) {
-                        task.isSelected!.value = value!;
-                        // if (task.isSelected!.value == true) {
-                          
-                        // } else {
-                          
-                        // }
+                        task.isSelected.value = value!;
+                        controller.updateTaskSelection(task.id!, value);
                       },
                       title: task.title,
                       description: task.description,

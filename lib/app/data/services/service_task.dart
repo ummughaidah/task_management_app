@@ -26,6 +26,19 @@ class ServiceTask {
     );
   }
 
+  // Memperbarui status isSelected untuk task
+  Future<int> updateSelection(int id, bool isSelected) async {
+    final db = await _initializeDb();
+    final result = await db.rawUpdate(
+      'UPDATE $_tableName SET isSelected = ? WHERE id = ?',
+      [
+        isSelected ? 1 : 0,
+        id
+      ], // Mengonversi boolean ke 1 (true) atau 0 (false)
+    );
+    return result;
+  }
+
   // Insert item baru menggunakan rawInsert
   Future<int> insertItem(String title, String description) async {
     final db = await _initializeDb();

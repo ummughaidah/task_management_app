@@ -38,6 +38,7 @@ dependencies:
   get: ^4.6.6
   sqflite: ^2.4.1
   sqflite_common_ffi: ^2.3.4
+  fluttertoast: ^8.2.8
 
 dev_dependencies:
   flutter_test:

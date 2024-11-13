@@ -38,7 +38,7 @@ class ItemCEWidget extends StatelessWidget {
         ElevatedButton(
           onPressed: onPressed,
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(Colors.grey),
+            // backgroundColor: WidgetStateProperty.all<Color>(y),
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_management_app/app/data/model/model_task.dart';
 import 'package:task_management_app/app/data/services/service_task.dart';
+import 'package:task_management_app/app/widget/custom_widget.dart';
 import 'package:task_management_app/theme/app_theme.dart';
 
 class HomeController extends GetxController {
@@ -39,6 +40,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    updateTaskSelection(1, false);
     loadAllTaskValue();
     // add task
     titleController = TextEditingController();
@@ -64,6 +66,23 @@ class HomeController extends GetxController {
     descriptionEditController?.dispose();
   }
 
+  // Menyimpan perubahan pada isSelected
+  Future<void> updateTaskSelection(int id, bool isSelected) async {
+    try {
+      final result = await _serviceTask.updateSelection(id, isSelected);
+      if (result == 0) {
+        message.value = "Failed to update your data";
+      } else {
+        message.value = "Your data is updated";
+        await loadAllTaskValue();
+        CustomWidget.showToast(message.value);
+        Get.offNamed('/home');
+      }
+    } catch (e) {
+      message.value = "Error updating data";
+    }
+  }
+
   // create task
   Future<void> saveTaskValue() async {
     if (titleController!.text.isEmpty || descriptionController!.text.isEmpty) {
@@ -77,17 +96,15 @@ class HomeController extends GetxController {
           titleController!.text, descriptionController!.text);
       if (result == 0) {
         message.value = "Failed to save your data";
-        print('Gagal');
+        CustomWidget.showToast(message.value);
       } else {
         message.value = "Your data is saved";
         await loadAllTaskValue();
-        Get.back();
-        print('Berhasil');
-        // Get.close(1);
+        CustomWidget.showToast(message.value);
+        Get.offNamed('/home');
       }
     } catch (e) {
       message.value = "Error failed to save your data";
-      print('error $e');
     } finally {
       isLoading.value = false;
     }
@@ -99,10 +116,8 @@ class HomeController extends GetxController {
     try {
       displayTask.value = await _serviceTask.getAllItems();
       message.value = "All of your data is loaded";
-      print('Success Get Data : ${displayTask[0].id}');
     } catch (e) {
       message.value = "Failed to load your all data";
-      print('Error Get Data : $e');
     } finally {
       isLoading.value = false;
     }
@@ -115,9 +130,11 @@ class HomeController extends GetxController {
           id, titleEditController!.text, descriptionEditController!.text);
       if (result == 0) {
         message.value = "Failed to update your data";
+        CustomWidget.showToast(message.value);
       } else {
         message.value = "Your data is updated";
         await loadAllTaskValue();
+        CustomWidget.showToast(message.value);
         Get.offNamed('/home');
       }
     } catch (e) {
@@ -130,10 +147,12 @@ class HomeController extends GetxController {
     try {
       await _serviceTask.removeItem(id);
       await loadAllTaskValue();
-      Get.back();
       message.value = "Your data is removed";
+      CustomWidget.showToast(message.value);
+      Get.offNamed('/home');
     } catch (e) {
       message.value = "Failed to remove your data";
+      CustomWidget.showToast(message.value);
     }
   }
 }
